@@ -1,0 +1,12 @@
+{
+ "dir": "ltr",
+ "lang": "en",
+ "short_name": "Download Offline",
+ "name": "Download Offline",
+ "description":"Download Offline",
+ "theme_color": "#FE9901",
+ "background_color": "#1D1F45",
+ "display": "standalone",
+ "scope": "/",
+ "start_url": "/"
+}

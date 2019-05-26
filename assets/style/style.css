@@ -1,0 +1,89 @@
+body {
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.tool-bar {
+    width: 100%;
+    height: 50px;
+    background-color: dodgerblue;
+    position: fixed;
+    z-index: 500;
+}
+
+.tool-bar button{
+    color: #fff;
+    background-color: transparent;
+    border: 0;
+    margin-top: 15px;
+    font-size: 17px;
+    margin-left: 10px;
+    display: none;
+}
+
+.main {
+    width: 94%;
+    padding: 10px;
+    float: right;
+    margin-top: 50px;
+}
+
+.main ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.main ul li video {
+    width: 100%
+}
+
+.main ul li .progress-bar {
+    width: calc(100% - 20px);
+    height: 10px;
+    background-color: #fff;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+
+.main ul li .progress-bar > div {
+    width: 0;
+    height: 20px;
+    background-color: green;
+}
+
+.main ul li .btn-download {
+    border: 0;
+    background-color: dodgerblue;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    padding: 2px;
+}
+
+.main ul li .btn-download img {
+    width: 90%;
+    fill: #fff;
+}
+
+.main ul li h2{
+    font-size: 15px;
+}
+
+.video-control{
+    width: 100%;
+    display: flex;
+}
+
+.download-manager{
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ccc;
+    z-index: 100;
+    top: 0;
+    left: -120vw;
+    transition: .5s;
+}
