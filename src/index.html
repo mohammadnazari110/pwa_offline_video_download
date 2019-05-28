@@ -6,37 +6,33 @@
     <link href="assets/style/style.css" rel="stylesheet">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
-
-
     <meta name=mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-capable content=yes>
-
     <meta name=msapplication-starturl content=/>
     <meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <link rel=manifest href=manifest.json>
     <meta name=msapplication-TileColor content=#FE9901>
     <meta name=msapplication-TileImage content=static/icons/ms-icon-144x144.png>
     <meta name=theme-color content=#1D1F45>
-
-
 </head>
 <body>
 
 <div class="tool-bar">
-    <button id="ntbDownloadList">download list</button>
-    <button id="btnBack">back</button>
+    <button>offline video app</button>
 </div>
 
 <div class="main">
+    <h1 style="font-size: 20px">curse web learning</h1>
     <ul id="videoList"></ul>
 </div>
-<div class="main download-manager">
-    <ul id="videoOfflineList" style="width: 94%;"></ul>
+
+<div class="modal_view">
+    <div class="close" onclick="$('.modal_view').css('display','none')">back to list</div>
+    <video controls id="preview_video"></video>
 </div>
 
-
 <!--scripts-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js"></script>
 <script src="assets/js/index.js"></script>
 </body>

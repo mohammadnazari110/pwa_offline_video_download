@@ -1,94 +1,31 @@
 $(document).ready(function () {
-
-
-    /*$('#btnMakeOffline').click(function () {
-
-        jQuery.ajax({
-            url: '/v2.mp4',
-            cache: false,
-            xhr: function () {
-                var xhr = new XMLHttpRequest();
-                xhr.responseType = 'arraybuffer'
-                //Upload progress
-                xhr.addEventListener('progress', function (e) {
-                    if (e.lengthComputable) $('.p > div').css('width', '' + (100 * e.loaded / e.total) + '%');
-                });
-                return xhr;
-            },
-            success: function (data) {
-
-                var blob = new Blob([new Uint8Array(data)], {type: 'video/mp4'});
-                /!*var url = window.URL || window.webkitURL;
-                var blobUrl = url.createObjectURL(blob);
-                console.log(blobUrl)
-                var v = $('#offlineVideo')
-                v.css('display', 'block')
-                v.attr('src', blobUrl)*!/
-
-
-                new PouchDB('sample').destroy().then(function () {
-
-
-                    var db = new PouchDB('sample');
-                    return db.putAttachment('mydoc', 'myfile', blob, 'video/mp4')
-                        .then(function () {
-                            console.log('Stored file')
-                            return db.getAttachment('mydoc', 'myfile');
-                        }).then(function (blob) {
-                            /!*var url = URL.createObjectURL(blob);
-                            document.body.innerHTML += '<div>Filesize: ' + JSON.stringify(Math.floor(blob.size / 1024)) + 'KB, Content-Type: ' + JSON.stringify(blob.type) + "</div>";
-                            document.body.innerHTML += '<div>Download link: <a href="' + url + '">' + url + '</div>';*!/
-
-                            /!*var url = window.URL || window.webkitURL;
-                            var blobUrl = url.createObjectURL(blob);
-                            var v = $('#offlineVideo')
-                            v.css('display', 'block')
-                            v.attr('src', blobUrl)*!/
-
-                            return db.get('mydoc');
-                        }).then(function (doc) {
-                            document.body.innerHTML += '<div>PouchDB document looks like this:</div><div><pre>' + JSON.stringify(doc, null, '  ') + '</pre></div>';
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-
-                });
-
-
-            },
-        });
-
-    });
-
-    $('#btnShowOffline').click(function () {
-
-        var db = new PouchDB('sample');
-        db.getAttachment('mydoc', 'myfile').then(function (doc) {
-
-            var url = window.URL || window.webkitURL;
-            var blobUrl = url.createObjectURL(doc);
-            var v = $('#offlineVideo')
-            v.css('display', 'block')
-            v.attr('src', blobUrl)
-
-
-        });
-
-    })*/
-
     app.init();
-
 })
 
 var videoList = [
     {
         id: 1,
-        title: "video 1",
+        title: "step one",
         src: "video/v2.mp4"
     },
     {
         id: 2,
-        title: "video 2",
+        title: "step two",
+        src: "video/v2.mp4"
+    },
+    {
+        id: 3,
+        title: "step three",
+        src: "video/v2.mp4"
+    },
+    {
+        id: 4,
+        title: "step four",
+        src: "video/v2.mp4"
+    },
+    {
+        id: 5,
+        title: "step five",
         src: "video/v2.mp4"
     }
 ]
@@ -98,32 +35,44 @@ var app = {
         var self = this;
         await db.init();
         await this.loadVideoList()
-        $('#ntbDownloadList').css('display', 'block')
-        $('#ntbDownloadList').click(function () {
-            self.loadOffline()
-        })
-        $('#btnBack').click(function () {
-            self.backToLsit()
-        })
-
-        //this.loadOffline()
     },
     loadVideoList() {
         console.log('load list')
         var videoListUl = $('#videoList');
         videoListUl.empty()
-
         for (var i = 0; i < videoList.length; i++) {
-            var item = '<li>' +
-                '<h2>' + videoList[i].title + '</h2>' +
-                '<video controls src="' + videoList[i].src + '"></video>' +
-                this.getDownloadTool(videoList[i].id) +
-                '</li>'
+            var item = '<li id="li_' + videoList[i].id + '"></li>'
             videoListUl.append(item)
+            this.getDownloadTool(videoList[i])
         }
 
     },
+    async getDownloadTool(item) {
+        await db.init();
+
+        for (var i = 0; i < db.allDocs.length; i++) {
+            if (db.allDocs[i].id == 'video_' + item.id) {
+                var res = '<button class="downloaded" onclick="app.playVideo('+item.id+')">' +
+                    '<img src="assets/media/icon-play.png">' +
+                    '<span> See Video ' + item.title + '</span>' +
+                    '</button>' +
+                    '<div class="progress-bar" id="pb_' + item.id + '"><div></div></div>';
+                $('#li_' + item.id).html('')
+                $('#li_' + item.id).append(res)
+                return;
+            }
+        }
+
+        var res = '<button onclick="app.downloadVideo(' + item.id + ')">' +
+            '<img src="assets/media/icon-download.png">' +
+            '<span> Download Video ' + item.title + '</span>' +
+            '</button>' +
+            '<div class="progress-bar" id="pb_' + item.id + '"><div></div></div>';
+        $('#li_' + item.id).html('')
+        $('#li_' + item.id).append(res)
+    },
     downloadVideo(id) {
+        var self = this;
 
         var video = null;
         for (var i = 0; i < videoList.length; i++)
@@ -151,11 +100,6 @@ var app = {
             },
             success: function (data) {
 
-                //console.log(new Blob([new Uint8Array(data)], {type: 'video/mp4'}))
-                // var url = window.URL || window.webkitURL;
-                // var blobUrl = url.createObjectURL(new Blob([new Uint8Array(data)], {type: 'video/mp4'}));
-                // console.log(blobUrl)
-
                 var videoRow = {
                     "_id": 'video_' + video.id,
                     "title": video.title,
@@ -167,7 +111,8 @@ var app = {
                     }
                 };
                 db.db.put(videoRow).then(function (result) {
-                    alert('video success download , can watch in download list')
+                    //alert('video success download , can watch in download list')
+                    self.getDownloadTool(video)
                 }).catch(function (err) {
                     console.log(err);
                 });
@@ -176,43 +121,14 @@ var app = {
             },
         });
     },
-    getDownloadTool(id) {
-        for (var i = 0; i < db.allDocs.length; i++) {
-            if (db.allDocs[i].id == 'video_' + id)
-                return '<div class="video-control">video there is offline</div>'
-        }
-
-        return '<div class="video-control">' +
-            '<button class="btn-download" onclick="app.downloadVideo(' + id + ')"><img src="assets/media/icon-download.png"></button>' +
-            '<div class="progress-bar" id="pb_' + id + '"><div></div></div>' +
-            '</div>';
+    async playVideo(id){
+        var doc = await db.db.getAttachment('video_'+id, 'video.mp4')
+        var url = window.URL || window.webkitURL;
+        var blobUrl = url.createObjectURL(doc);
+        $('#preview_video').attr('src',blobUrl)
+        $('.modal_view').css('display','flex')
+        console.log(blobUrl)
     },
-    async loadOffline() {
-        $('.download-manager').css('left','0');
-        $('#ntbDownloadList').css('display', 'none')
-        $('#btnBack').css('display', 'block')
-
-        console.log('load offline list')
-        var videoListUl = $('#videoOfflineList');
-        videoListUl.empty()
-        for (var i = 0; i < db.allDocs.length; i++) {
-
-            var doc = await db.db.getAttachment(db.allDocs[i].id, 'video.mp4')
-            var url = window.URL || window.webkitURL;
-            var blobUrl = url.createObjectURL(doc);
-            var item = '<li>' +
-                '<h2>' + db.allDocs[i].doc.title + '</h2>' +
-                '<video controls src="' + blobUrl + '"></video>' +
-                '</li>'
-            videoListUl.append(item)
-        }
-    },
-    backToLsit(){
-        $('.download-manager').css('left','-120vw');
-        $('#btnBack').css('display', 'none')
-        $('#ntbDownloadList').css('display', 'block')
-        this.loadVideoList()
-    }
 }
 
 var db = {
