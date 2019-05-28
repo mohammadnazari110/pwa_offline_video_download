@@ -1,4 +1,4 @@
-# pwa_offline_video_download
+# PWA download video and use offline .. local database PouchDB
 PWA video download use offline 
 
 this is a sample Video center PWA 
