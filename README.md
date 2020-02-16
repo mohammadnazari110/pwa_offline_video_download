@@ -1,16 +1,16 @@
-# PWA download video and use offline .. local database PouchDB
-PWA video download use offline 
+# PWA download video and watch offline 
 
-this is a sample Video center PWA 
+use local database #PouchDB
 
-feature is :
-have download manager for download video 
-use offline use local Database pouchDB 
+demo https://pwa-offline-video.netlify.com…
 
-PWA download video manager use local database PouchDB
+this is a sample PWA app for download video and store to indexedDB with pouchDB
 
-can download video and store video Blob data in local Database and Use that offline
+when user click on video send a GET request to video url for download
+after finished request video blob data stored in local database with pouchDB 
 
 ![alt text](https://github.com/mohammadnazari110/pwa_offline_video_download/blob/master/screenShot/1.png)
 
 ![alt text](https://github.com/mohammadnazari110/pwa_offline_video_download/blob/master/screenShot/2.png)
+
+complete veresion run in VOD platform => PWA MobileApp https://m.monibapp.com
