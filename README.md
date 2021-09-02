@@ -6,8 +6,8 @@ demo https://pwa-offline-video.netlify.com…
 
 this is a sample PWA app for download video and store to indexedDB with pouchDB
 
-when user click on video send a GET request to video url for download
-after finished request video blob data stored in local database with pouchDB 
+when the user clicks on video send a GET request to the video URL for download
+after the video download response, blob data stored in the local database with pouchDB 
 
 ![alt text](https://github.com/mohammadnazari110/pwa_offline_video_download/blob/master/screenShot/1.png)
 
